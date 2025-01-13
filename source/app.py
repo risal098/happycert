@@ -3,6 +3,7 @@ from tkinter import filedialog, colorchooser, simpledialog
 from tkinter import font as tkfont
 from PIL import Image, ImageTk, ImageDraw, ImageFont
 import os
+import pandas as pd
 
 
 class ImageEditorApp:
@@ -21,6 +22,7 @@ class ImageEditorApp:
         self.text_color = "#000000"
         self.text_font = "Arial"
         self.font_file = ""
+        self.sheet_path = ""
 
         # Topbar with 6 buttons
         self.topbar = tk.Frame(root, bg="lightgray", height=40)
@@ -30,17 +32,21 @@ class ImageEditorApp:
             self.topbar, text="Import Image", command=self.import_image)
         self.import_button.pack(side=tk.LEFT, padx=10)
 
-        self.save_button = tk.Button(
-            self.topbar, text="Save", command=self.save)
-        self.save_button.pack(side=tk.LEFT, padx=10)
+        self.preview_button = tk.Button(
+            self.topbar, text="Preview", command=self.preview)
+        self.preview_button.pack(side=tk.LEFT, padx=10)
+
+        self.generate_button = tk.Button(
+            self.topbar, text="Generate", command=self.generate)
+        self.generate_button.pack(side=tk.LEFT, padx=10)
 
         self.text_size_button = tk.Button(
             self.topbar, text="Increase Text Size", command=self.increase_text_size)
-        self.text_size_button.pack(side=tk.LEFT, padx=10)
+        self.text_size_button.pack(side=tk.LEFT, padx=5)
 
         self.decrease_size_button = tk.Button(
             self.topbar, text="Decrease Text Size", command=self.decrease_text_size)
-        self.decrease_size_button.pack(side=tk.LEFT, padx=10)
+        self.decrease_size_button.pack(side=tk.LEFT, padx=5)
 
         self.reset_button = tk.Button(
             self.topbar, text="Reset", command=self.reset)
@@ -107,18 +113,70 @@ class ImageEditorApp:
             self.text_size -= 2
         self.update_text_size()
 
-    def save(self):
+    def save(self, name):
         image = Image.open(self.image_path)
+        print("tes")
         draw = ImageDraw.Draw(image)
-        if self.font_file=="":
-        	font=ImageFont.truetype("arial.ttf", size=self.text_size*1.3)
+        if self.font_file == "":
+        	font = ImageFont.truetype("arial.ttf", size=self.text_size*1.3)
         else:
         	font = ImageFont.truetype(self.font_file, size=self.text_size*1.3)
+        text = name
+        position = self.text_position
+        hex_color = self.text_color
+        rgb_color = tuple(int(hex_color[i:i+2], 16) for i in (1, 3, 5))
+        bbox = draw.textbbox((0, 0), text, font=font)
+        text_width = bbox[2] - bbox[0]
+        text_height = bbox[3] - bbox[1]
+        position = ((position[0] - text_width // 2)-5,(position[1] - text_height // 2)-16)
+        draw.text(position, text, font=font, fill=rgb_color)
+        print(name+"png")
+        if self.image_path[-4:] == ".png":
+        	image.save(name+'.png')  # Save to a new file
+        elif self.image_path[-4:] == ".jpg":
+        	image.save(name+'.jpg')
+        elif self.image_path[-4:] == ".jpeg":
+        	image.save(name+'.jpeg')
+
+    def generate(self):
+        """Allow the user to select a custom font (.ttf) from their folder."""
+        path_file = filedialog.askopenfilename(title="Select excel", filetypes=[
+                                               ("excel type", "*.xlsx *.xls *.xlt")])
+        if path_file and os.path.exists(path_file):
+            # Load the font into Tkinter
+            try:
+            # Load the Excel file
+                df = pd.read_excel(path_file)
+
+                # Get the first column (index 0) of the dataframe
+                first_column = df.iloc[:, 0]
+
+                # Display the items in the first column
+                for x in first_column:
+                    self.save( x)
+            except Exception as e:
+                print(f"Error excel: {e}")
+
+    def preview(self):
+        image = Image.open(self.image_path)
+        draw = ImageDraw.Draw(image)
+        if self.font_file == "":
+            font = ImageFont.truetype("arial.ttf", size=self.text_size*1.3)
+        else:
+            font = ImageFont.truetype(self.font_file, size=self.text_size*1.3)
         text = "Full Name Risal"
         position = self.text_position
         hex_color = self.text_color
         rgb_color = tuple(int(hex_color[i:i+2], 16) for i in (1, 3, 5))
+        bbox = draw.textbbox((0, 0), text, font=font)
+        text_width = bbox[2] - bbox[0]
+        text_height = bbox[3] - bbox[1]
+        position = ((position[0] - text_width // 2)-5,
+                    (position[1] - text_height // 2)-16)
         draw.text(position, text, font=font, fill=rgb_color)
+        # text_width = draw.textlength(text, font=font)
+       # position =  ((position[0] - text_width // 2)-3, position[1]-5)
+       # draw.text(position, text, font=font, fill=rgb_color)
        # image.save('output_image.png')  # Save to a new file
         image.show()  # Optionally, show the image
 
