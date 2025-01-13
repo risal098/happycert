@@ -24,6 +24,23 @@ class ImageEditorApp:
         self.font_file = ""
         self.sheet_path = ""
 
+        # Create a frame for the canvas and scrollbars
+        self.canvas_frame = tk.Frame(root)
+        self.canvas_frame.pack(fill=tk.BOTH, expand=True)
+
+        # Create the canvas
+        self.canvas = tk.Canvas(self.canvas_frame, bg="white", cursor="cross")
+        self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+        # Create the scrollbars
+        self.v_scrollbar = tk.Scrollbar(self.canvas_frame, orient=tk.VERTICAL, command=self.canvas.yview)
+        self.v_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        self.h_scrollbar = tk.Scrollbar(self.canvas_frame, orient=tk.HORIZONTAL, command=self.canvas.xview)
+        self.h_scrollbar.pack(side=tk.BOTTOM, fill=tk.X)
+
+        # Link scrollbars to the canvas
+        self.canvas.config(yscrollcommand=self.v_scrollbar.set, xscrollcommand=self.h_scrollbar.set)
+
         # Topbar with 6 buttons
         self.topbar = tk.Frame(root, bg="lightgray", height=40)
         self.topbar.pack(fill=tk.X)
@@ -60,17 +77,13 @@ class ImageEditorApp:
             self.topbar, text="Change Text Color", command=self.change_color)
         self.color_button.pack(side=tk.LEFT, padx=10)
 
-        # Canvas for image and text
-        self.canvas = tk.Canvas(root, bg="white", cursor="cross")
-        self.canvas.pack(fill=tk.BOTH, expand=True)
-
         # Mouse click to place text
         self.canvas.bind("<Button-1>", self.on_click)
         # Mouse drag to move text
         self.canvas.bind("<B1-Motion>", self.on_drag)
 
     def import_image(self):
-        """Open file dialog to import an image and show it."""
+        """Resize image to fit the window size."""
         file_path = filedialog.askopenfilename(title="Open Image", filetypes=[
                                                ("Image Files", "*.png *.jpg *.jpeg")])
         if file_path:
@@ -83,6 +96,35 @@ class ImageEditorApp:
             print(f"Image Path: {self.image_path}")
             print(
                 f"Text Position: {self.text_position}, Text Size: {self.text_size}, Text Font: {self.text_font}, Text Color: {self.text_color}")
+        if self.image:
+            window_width = self.root.winfo_width()
+            window_height = self.root.winfo_height()
+
+            img_width, img_height = self.image.size
+            aspect_ratio = img_width / img_height
+
+            if img_width > window_width or img_height > window_height:
+                if img_width > img_height:
+                    new_width = window_width
+                    new_height = int(new_width / aspect_ratio)
+                else:
+                    new_height = window_height
+                    new_width = int(new_height * aspect_ratio)
+                self.image = self.image.resize((new_width, new_height),Image.Resampling.LANCZOS)
+                
+        '''"""Open file dialog to import an image and show it."""
+        file_path = filedialog.askopenfilename(title="Open Image", filetypes=[
+                                               ("Image Files", "*.png *.jpg *.jpeg")])
+        if file_path:
+            self.image_path = file_path
+            self.image = Image.open(self.image_path)
+            self.tk_image = ImageTk.PhotoImage(self.image)
+            self.canvas.create_image(0, 0, anchor=tk.NW, image=self.tk_image)
+            self.canvas.create_text(self.text_position, text=self.text, font=(
+                self.text_font, self.text_size), fill=self.text_color, tags="text")
+            print(f"Image Path: {self.image_path}")
+            print(
+                f"Text Position: {self.text_position}, Text Size: {self.text_size}, Text Font: {self.text_font}, Text Color: {self.text_color}")'''
 
     def on_click(self, event):
         """Handle mouse click to set text position."""
