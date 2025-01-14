@@ -24,6 +24,9 @@ class ImageEditorApp:
         self.font_file = ""
         self.sheet_path = ""
 
+        # Variables for panning
+        self.drag_data = {"x": 0, "y": 0}  # Start coordinates for dragging
+
         # Create a frame for the canvas and scrollbars
         self.canvas_frame = tk.Frame(root)
         self.canvas_frame.pack(fill=tk.BOTH, expand=True)
@@ -33,13 +36,16 @@ class ImageEditorApp:
         self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
         # Create the scrollbars
-        self.v_scrollbar = tk.Scrollbar(self.canvas_frame, orient=tk.VERTICAL, command=self.canvas.yview)
+        self.v_scrollbar = tk.Scrollbar(
+            self.canvas_frame, orient=tk.VERTICAL, command=self.canvas.yview)
         self.v_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-        self.h_scrollbar = tk.Scrollbar(self.canvas_frame, orient=tk.HORIZONTAL, command=self.canvas.xview)
+        self.h_scrollbar = tk.Scrollbar(
+            self.canvas_frame, orient=tk.HORIZONTAL, command=self.canvas.xview)
         self.h_scrollbar.pack(side=tk.BOTTOM, fill=tk.X)
 
         # Link scrollbars to the canvas
-        self.canvas.config(yscrollcommand=self.v_scrollbar.set, xscrollcommand=self.h_scrollbar.set)
+        self.canvas.config(yscrollcommand=self.v_scrollbar.set,
+                           xscrollcommand=self.h_scrollbar.set)
 
         # Topbar with 6 buttons
         self.topbar = tk.Frame(root, bg="lightgray", height=40)
@@ -82,49 +88,48 @@ class ImageEditorApp:
         # Mouse drag to move text
         self.canvas.bind("<B1-Motion>", self.on_drag)
 
+        # Mouse event bindings for panning the image
+        # Right mouse button press
+        self.canvas.bind("<Button-3>", self.on_right_click)
+        # Right mouse button drag
+        self.canvas.bind("<B3-Motion>", self.on_right_drag)
+
     def import_image(self):
-        """Resize image to fit the window size."""
-        file_path = filedialog.askopenfilename(title="Open Image", filetypes=[
-                                               ("Image Files", "*.png *.jpg *.jpeg")])
-        if file_path:
-            self.image_path = file_path
-            self.image = Image.open(self.image_path)
-            self.tk_image = ImageTk.PhotoImage(self.image)
-            self.canvas.create_image(0, 0, anchor=tk.NW, image=self.tk_image)
-            self.canvas.create_text(self.text_position, text=self.text, font=(
-                self.text_font, self.text_size), fill=self.text_color, tags="text")
-            print(f"Image Path: {self.image_path}")
-            print(
-                f"Text Position: {self.text_position}, Text Size: {self.text_size}, Text Font: {self.text_font}, Text Color: {self.text_color}")
-        if self.image:
-            window_width = self.root.winfo_width()
-            window_height = self.root.winfo_height()
+            """Resize image to fit the window size and display it."""
+            file_path = filedialog.askopenfilename(title="Open Image", filetypes=[
+                ("Image Files", "*.png *.jpg *.jpeg")])
+            if file_path:
+                self.image_path = file_path
+                self.image = Image.open(self.image_path)
 
-            img_width, img_height = self.image.size
-            aspect_ratio = img_width / img_height
+                # Resize the image to fit the window (optional)
+                window_width = self.root.winfo_width()
+                window_height = self.root.winfo_height()
 
-            if img_width > window_width or img_height > window_height:
-                if img_width > img_height:
-                    new_width = window_width
-                    new_height = int(new_width / aspect_ratio)
-                else:
-                    new_height = window_height
-                    new_width = int(new_height * aspect_ratio)
-                self.image = self.image.resize((new_width, new_height),Image.Resampling.LANCZOS)
-                
-        '''"""Open file dialog to import an image and show it."""
-        file_path = filedialog.askopenfilename(title="Open Image", filetypes=[
-                                               ("Image Files", "*.png *.jpg *.jpeg")])
-        if file_path:
-            self.image_path = file_path
-            self.image = Image.open(self.image_path)
-            self.tk_image = ImageTk.PhotoImage(self.image)
-            self.canvas.create_image(0, 0, anchor=tk.NW, image=self.tk_image)
-            self.canvas.create_text(self.text_position, text=self.text, font=(
+                img_width, img_height = self.image.size
+                aspect_ratio = img_width / img_height
+
+              
+
+                    # Convert the image to a PhotoImage object for Tkinter
+                self.tk_image = ImageTk.PhotoImage(self.image)
+
+                    # Clear the canvas and display the image
+                    # Ensure any old image is removed
+                self.canvas.delete("all")
+                self.canvas.create_image(
+                        0, 0, anchor=tk.NW, image=self.tk_image)
+
+                    # Update the scroll region of the canvas to fit the image
+                self.canvas.config(scrollregion=self.canvas.bbox("all"))
+
+                    # Display the text on the canvas
+                self.canvas.create_text(self.text_position, text=self.text, font=(
                 self.text_font, self.text_size), fill=self.text_color, tags="text")
-            print(f"Image Path: {self.image_path}")
-            print(
-                f"Text Position: {self.text_position}, Text Size: {self.text_size}, Text Font: {self.text_font}, Text Color: {self.text_color}")'''
+
+                #    print(f"Image Path: {self.image_path}")
+                 #   print(
+                  #      f"Text Position: {self.text_position}, Text Size: {self.text_size}, Text Font: {self.text_font}, Text Color: {self.text_color}")
 
     def on_click(self, event):
         """Handle mouse click to set text position."""
@@ -160,9 +165,9 @@ class ImageEditorApp:
         print("tes")
         draw = ImageDraw.Draw(image)
         if self.font_file == "":
-        	font = ImageFont.truetype("arial.ttf", size=self.text_size*1.3)
+            font = ImageFont.truetype("arial.ttf", size=self.text_size*1.3)
         else:
-        	font = ImageFont.truetype(self.font_file, size=self.text_size*1.3)
+            font = ImageFont.truetype(self.font_file, size=self.text_size*1.3)
         text = name
         position = self.text_position
         hex_color = self.text_color
@@ -170,15 +175,16 @@ class ImageEditorApp:
         bbox = draw.textbbox((0, 0), text, font=font)
         text_width = bbox[2] - bbox[0]
         text_height = bbox[3] - bbox[1]
-        position = ((position[0] - text_width // 2)-5,(position[1] - text_height // 2)-16)
+        position = ((position[0] - text_width // 2)-5,
+                    (position[1] - text_height // 2)-16)
         draw.text(position, text, font=font, fill=rgb_color)
         print(name+"png")
         if self.image_path[-4:] == ".png":
-        	image.save(name+'.png')  # Save to a new file
+            image.save("results/"+name+'.png')  # Save to a new file
         elif self.image_path[-4:] == ".jpg":
-        	image.save(name+'.jpg')
+            image.save("results/"+name+'.jpg')
         elif self.image_path[-4:] == ".jpeg":
-        	image.save(name+'.jpeg')
+            image.save("results/"+name+'.jpeg')
 
     def generate(self):
         """Allow the user to select a custom font (.ttf) from their folder."""
@@ -187,7 +193,7 @@ class ImageEditorApp:
         if path_file and os.path.exists(path_file):
             # Load the font into Tkinter
             try:
-            # Load the Excel file
+                # Load the Excel file
                 df = pd.read_excel(path_file)
 
                 # Get the first column (index 0) of the dataframe
@@ -195,7 +201,7 @@ class ImageEditorApp:
 
                 # Display the items in the first column
                 for x in first_column:
-                    self.save( x)
+                    self.save(x)
             except Exception as e:
                 print(f"Error excel: {e}")
 
@@ -262,6 +268,20 @@ class ImageEditorApp:
         self.font_file = ""
         print(
             f"Text Position: {self.text_position}, Text Size: {self.text_size}, Text Font: {self.text_font}, Text Color: {self.text_color}")
+
+    def on_right_click(self, event):
+        """Start dragging the canvas with right-click."""
+        self.drag_data["x"] = event.x
+        self.drag_data["y"] = event.y
+
+    def on_right_drag(self, event):
+        """Drag the canvas to pan the image."""
+        dx = event.x - self.drag_data["x"]
+        dy = event.y - self.drag_data["y"]
+        self.canvas.xview_scroll(-dx, "units")
+        self.canvas.yview_scroll(-dy, "units")
+        self.drag_data["x"] = event.x
+        self.drag_data["y"] = event.y
 
 
 # Main program to run the GUI
