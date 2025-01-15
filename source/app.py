@@ -4,23 +4,31 @@ from tkinter import font as tkfont
 from PIL import Image, ImageTk, ImageDraw, ImageFont
 import os
 import pandas as pd
+import sys
 
 
+def resource_path(relative_path):
+    """Get the absolute path to a resource."""
+    if getattr(sys, 'frozen', False):  # Check if running as a PyInstaller bundle
+        base_path = sys._MEIPASS
+    else:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
 class ImageEditorApp:
     def __init__(self, root):
         self.root = root
         self.root.title("Image Editor")
-        self.root.geometry("800x600")
+        self.root.geometry("1100x700")
 
         # Variables
         self.image_path = None
         self.image = None
         self.tk_image = None
-        self.text = "Full Name Risal"
+        self.text = "The Full Name"
         self.text_size = 20
         self.text_position = (100, 100)
         self.text_color = "#000000"
-        self.text_font = "Arial"
+        self.text_font = "Helvetica"
         self.font_file = ""
         self.sheet_path = ""
 
@@ -39,17 +47,21 @@ class ImageEditorApp:
         self.v_scrollbar = tk.Scrollbar(
             self.canvas_frame, orient=tk.VERTICAL, command=self.canvas.yview)
         self.v_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-        self.h_scrollbar = tk.Scrollbar(
-            self.canvas_frame, orient=tk.HORIZONTAL, command=self.canvas.xview)
-        self.h_scrollbar.pack(side=tk.BOTTOM, fill=tk.X)
+        
+        
 
-        # Link scrollbars to the canvas
-        self.canvas.config(yscrollcommand=self.v_scrollbar.set,
-                           xscrollcommand=self.h_scrollbar.set)
+        
 
         # Topbar with 6 buttons
         self.topbar = tk.Frame(root, bg="lightgray", height=40)
         self.topbar.pack(fill=tk.X)
+        
+        self.h_scrollbar = tk.Scrollbar(
+            self.topbar, orient=tk.HORIZONTAL, command=self.canvas.xview)
+        self.h_scrollbar.pack(side=tk.TOP, fill=tk.X)
+        # Link scrollbars to the canvas
+        self.canvas.config(yscrollcommand=self.v_scrollbar.set,
+                           xscrollcommand=self.h_scrollbar.set)
 
         self.import_button = tk.Button(
             self.topbar, text="Import Image", command=self.import_image)
@@ -165,7 +177,7 @@ class ImageEditorApp:
         print("tes")
         draw = ImageDraw.Draw(image)
         if self.font_file == "":
-            font = ImageFont.truetype("arial.ttf", size=self.text_size*1.3)
+            font = ImageFont.truetype(resource_path("Helvetica.ttf"), size=self.text_size*1.3)
         else:
             font = ImageFont.truetype(self.font_file, size=self.text_size*1.3)
         text = name
@@ -209,10 +221,10 @@ class ImageEditorApp:
         image = Image.open(self.image_path)
         draw = ImageDraw.Draw(image)
         if self.font_file == "":
-            font = ImageFont.truetype("arial.ttf", size=self.text_size*1.3)
+            font = ImageFont.truetype(resource_path("Helvetica.ttf"), size=self.text_size*1.3)
         else:
             font = ImageFont.truetype(self.font_file, size=self.text_size*1.3)
-        text = "Full Name Risal"
+        text = "The Full Name"
         position = self.text_position
         hex_color = self.text_color
         rgb_color = tuple(int(hex_color[i:i+2], 16) for i in (1, 3, 5))
@@ -264,7 +276,7 @@ class ImageEditorApp:
         self.text_size = 20
         self.text_position = (100, 100)
         self.text_color = "#000000"
-        self.text_font = "Arial"
+        self.text_font = "Helvetica"
         self.font_file = ""
         print(
             f"Text Position: {self.text_position}, Text Size: {self.text_size}, Text Font: {self.text_font}, Text Color: {self.text_color}")
@@ -286,6 +298,12 @@ class ImageEditorApp:
 
 # Main program to run the GUI
 if __name__ == "__main__":
-    root = tk.Tk()
-    app = ImageEditorApp(root)
-    root.mainloop()
+		directory = "results"
+		if not os.path.exists(directory):
+				os.makedirs(directory)
+				print(f"Directory '{directory}' created.")
+		else:
+				print(f"Directory '{directory}' already exists.")
+		root = tk.Tk()
+		app = ImageEditorApp(root)
+		root.mainloop()
