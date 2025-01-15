@@ -10,7 +10,7 @@
     ·
     <a href="https://drive.google.com/drive/u/0/folders/1kD_oFd6BFH8faGDGzcpAqWpJJvflb5rO">Download</a>
     ·
-    <a href="#Terjemahan Bahasa">Tutorial Indo</a>
+    <a href="#terjemahan">Tutorial Indo</a>
     ·
     
   </p>
@@ -44,7 +44,7 @@ for macOs or linux user, download python and import necessary module (tkinter an
 
 # Terjemahan Bahasa
 
-## Tentang (Ind)
+## Tentang 
 happycert adalah sebuah aplikasi untuk me-"generate" sertifikat berdasarkan nama nama pada file excel/sheet. Jadi tidak perlu memasukkan 1 1 nama pada excel ke dalam desain. Meski banyak web app diluar sana yang sudah memiliki fitur ini, namum keterbatasan jumlah, kecepatan dan penamaan hasil sertifikat yang masih "random" menginspirasi saya untuk menyelesaikan ketiga masalah tersebut melalui aplikasi yang saya buat.
 
 aplikasi ini memiliki fitur dasar seperti ganti warna text, memposisikan text sesuai keinginan, mengatur warna dan ukuran text.
