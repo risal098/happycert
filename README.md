@@ -10,7 +10,7 @@
     ·
     <a href="https://drive.google.com/drive/u/0/folders/1kD_oFd6BFH8faGDGzcpAqWpJJvflb5rO">Download</a>
     ·
-    <a href="#terjemahan">Tutorial Indo</a>
+    <a href="#terjemahan-bahasa">Tutorial Indonesia</a>
     ·
     
   </p>
