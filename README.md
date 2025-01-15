@@ -27,9 +27,9 @@ https://drive.google.com/drive/u/0/folders/1kD_oFd6BFH8faGDGzcpAqWpJJvflb5rO
 
 
 ## Instalation and Usage
-for windows user, simply download from google drive provide in previous (download) section and run the exe (or press "extract here" if you download the .zip instead)
+- for windows user, simply download from google drive provide in previous (download) section and run the exe (or press "extract here" if you download the .zip instead)
 
-for macOs or linux user, download python and import necessary module (tkinter and pillow), and thats it, you can run the app.py in source folder in this repo
+- for macOs or linux user, download python and import necessary module (tkinter and pillow), and thats it, you can run the app.py in source folder in this repo
 
 ## Documentation
 - run the program
@@ -55,16 +55,16 @@ Untuk pengguna Windows, unduh file .exe atau .zip di Google Drive berikut:
 https://drive.google.com/drive/u/0/folders/1kD_oFd6BFH8faGDGzcpAqWpJJvflb5rO
 
 ## Instalasi dan Penggunaan
-Untuk pengguna Windows, cukup unduh file dari Google Drive yang telah disediakan di bagian sebelumnya (Download) dan jalankan file .exe (atau tekan "extract here" jika Anda mengunduh file .zip).
+- Untuk pengguna Windows, cukup unduh file dari Google Drive yang telah disediakan di bagian sebelumnya (Download) dan jalankan file .exe (atau tekan "extract here" jika Anda mengunduh file .zip).
 
-Untuk pengguna macOS atau Linux, unduh Python dan impor modul yang diperlukan (tkinter dan pillow), setelah itu Anda dapat menjalankan file app.py yang ada di folder sumber dalam repositori ini.
+- Untuk pengguna macOS atau Linux, unduh Python dan impor modul yang diperlukan (tkinter dan pillow), setelah itu Anda dapat menjalankan file app.py yang ada di folder sumber dalam repositori ini.
 
 ## Dokumentasi
-Jalankan program.
-Pilih gambar template sertifikat (format png, jpg, atau jpeg).
-Klik pada layar untuk menentukan tempat teks nama, atau cukup seret teks ke tempat yang diinginkan.
-Ubah font, ukuran, atau warna sesuai keinginan (pastikan Anda mengunduh font berformat .ttf atau .otf).
-Klik "Preview" untuk memastikan semua elemen berada di tempat yang seharusnya.
-Jika Anda sudah puas dengan hasilnya, klik "Generate" dan pilih file Excel/Sheet Anda.
-Pastikan semua nama yang ingin dihasilkan ada di kolom 1 (Anda juga dapat memodifikasi kode sumber jika diperlukan).
-Selesai! Tunggu hasilnya di folder "results".
+- Jalankan program.
+- Pilih gambar template sertifikat (format png, jpg, atau jpeg).
+- Klik pada layar untuk menentukan tempat teks nama, atau cukup seret teks ke tempat yang diinginkan.
+- Ubah font, ukuran, atau warna sesuai keinginan (pastikan Anda mengunduh font berformat .ttf atau .otf).
+- Klik "Preview" untuk memastikan semua elemen berada di tempat yang seharusnya.
+- Jika Anda sudah puas dengan hasilnya, klik "Generate" dan pilih file Excel/Sheet Anda.
+- Pastikan semua nama yang ingin dihasilkan ada di kolom 1 (Anda juga dapat memodifikasi kode sumber jika diperlukan).
+- Selesai! Tunggu hasilnya di folder "results".
