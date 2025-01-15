@@ -8,8 +8,8 @@ import sys
 
 
 def resource_path(relative_path):
-    """Get the absolute path to a resource."""
-    if getattr(sys, 'frozen', False):  # Check if running as a PyInstaller bundle
+    
+    if getattr(sys, 'frozen', False):  
         base_path = sys._MEIPASS
     else:
         base_path = os.path.abspath(".")
@@ -20,7 +20,7 @@ class ImageEditorApp:
         self.root.title("Image Editor")
         self.root.geometry("1100x700")
 
-        # Variables
+        # init
         self.image_path = None
         self.image = None
         self.tk_image = None
@@ -32,18 +32,18 @@ class ImageEditorApp:
         self.font_file = ""
         self.sheet_path = ""
 
-        # Variables for panning
-        self.drag_data = {"x": 0, "y": 0}  # Start coordinates for dragging
+        # dragging var
+        self.drag_data = {"x": 0, "y": 0}  
 
-        # Create a frame for the canvas and scrollbars
+        # frame canvas for scrollbars
         self.canvas_frame = tk.Frame(root)
         self.canvas_frame.pack(fill=tk.BOTH, expand=True)
 
-        # Create the canvas
+        # canvas
         self.canvas = tk.Canvas(self.canvas_frame, bg="white", cursor="cross")
         self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
-        # Create the scrollbars
+        # scrollbars
         self.v_scrollbar = tk.Scrollbar(
             self.canvas_frame, orient=tk.VERTICAL, command=self.canvas.yview)
         self.v_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
@@ -52,7 +52,7 @@ class ImageEditorApp:
 
         
 
-        # Topbar with 6 buttons
+        # Topbar 
         self.topbar = tk.Frame(root, bg="lightgray", height=40)
         self.topbar.pack(fill=tk.X)
         
@@ -107,7 +107,7 @@ class ImageEditorApp:
         self.canvas.bind("<B3-Motion>", self.on_right_drag)
 
     def import_image(self):
-            """Resize image to fit the window size and display it."""
+            
             file_path = filedialog.askopenfilename(title="Open Image", filetypes=[
                 ("Image Files", "*.png *.jpg *.jpeg")])
             if file_path:
@@ -123,19 +123,19 @@ class ImageEditorApp:
 
               
 
-                    # Convert the image to a PhotoImage object for Tkinter
+                    
                 self.tk_image = ImageTk.PhotoImage(self.image)
 
-                    # Clear the canvas and display the image
-                    # Ensure any old image is removed
+                    
+                    
                 self.canvas.delete("all")
                 self.canvas.create_image(
                         0, 0, anchor=tk.NW, image=self.tk_image)
 
-                    # Update the scroll region of the canvas to fit the image
+                    
                 self.canvas.config(scrollregion=self.canvas.bbox("all"))
 
-                    # Display the text on the canvas
+                    
                 self.canvas.create_text(self.text_position, text=self.text, font=(
                 self.text_font, self.text_size), fill=self.text_color, tags="text")
 
@@ -144,17 +144,17 @@ class ImageEditorApp:
                   #      f"Text Position: {self.text_position}, Text Size: {self.text_size}, Text Font: {self.text_font}, Text Color: {self.text_color}")
 
     def on_click(self, event):
-        """Handle mouse click to set text position."""
+        
         self.text_position = (event.x, event.y)
         self.update_text_position()
 
     def on_drag(self, event):
-        """Handle mouse drag to move text."""
+        
         self.text_position = (event.x, event.y)
         self.update_text_position()
 
     def update_text_position(self):
-        """Update the position and print to CLI."""
+        
         self.canvas.delete("text")  # Delete old text
         self.canvas.create_text(self.text_position, text=self.text, font=(
             self.text_font, self.text_size), fill=self.text_color, tags="text")
@@ -162,12 +162,12 @@ class ImageEditorApp:
             f"Text Position: {self.text_position}, Text Size: {self.text_size}, Text Font: {self.text_font}, Text Color: {self.text_color}")
 
     def increase_text_size(self):
-        """Increase text size and update text."""
+        
         self.text_size += 2
         self.update_text_size()
 
     def decrease_text_size(self):
-        """Decrease text size and update text."""
+        
         if self.text_size > 2:
             self.text_size -= 2
         self.update_text_size()
@@ -199,7 +199,7 @@ class ImageEditorApp:
             image.save("results/"+name+'.jpeg')
 
     def generate(self):
-        """Allow the user to select a custom font (.ttf) from their folder."""
+        
         path_file = filedialog.askopenfilename(title="Select excel", filetypes=[
                                                ("excel type", "*.xlsx *.xls *.xlt")])
         if path_file and os.path.exists(path_file):
@@ -241,7 +241,7 @@ class ImageEditorApp:
         image.show()  # Optionally, show the image
 
     def update_text_size(self):
-        """Update the size of the text and print to CLI."""
+        
         self.canvas.delete("text")  # Delete old text
         self.canvas.create_text(self.text_position, text=self.text, font=(
             self.text_font, self.text_size), fill=self.text_color, tags="text")
@@ -249,7 +249,7 @@ class ImageEditorApp:
             f"Text Position: {self.text_position}, Text Size: {self.text_size}, Text Font: {self.text_font}, Text Color: {self.text_color}")
 
     def change_font(self):
-        """Allow the user to select a custom font (.ttf) from their folder."""
+        
         font_file = filedialog.askopenfilename(title="Select Font", filetypes=[
                                                ("TrueType Font", "*.ttf *.otf")])
         if font_file and os.path.exists(font_file):
@@ -264,14 +264,14 @@ class ImageEditorApp:
                 print(f"Error loading font: {e}")
 
     def change_color(self):
-        """Change the text color using a color chooser."""
+        
         color = colorchooser.askcolor()[1]  # Returns a hex color
         if color:
             self.text_color = color
             self.update_text_size()
 
     def reset(self):
-        """Reset the canvas and settings."""
+        
         self.canvas.delete("all")
         self.text_size = 20
         self.text_position = (100, 100)
@@ -282,12 +282,12 @@ class ImageEditorApp:
             f"Text Position: {self.text_position}, Text Size: {self.text_size}, Text Font: {self.text_font}, Text Color: {self.text_color}")
 
     def on_right_click(self, event):
-        """Start dragging the canvas with right-click."""
+        
         self.drag_data["x"] = event.x
         self.drag_data["y"] = event.y
 
     def on_right_drag(self, event):
-        """Drag the canvas to pan the image."""
+        
         dx = event.x - self.drag_data["x"]
         dy = event.y - self.drag_data["y"]
         self.canvas.xview_scroll(-dx, "units")
@@ -296,7 +296,7 @@ class ImageEditorApp:
         self.drag_data["y"] = event.y
 
 
-# Main program to run the GUI
+
 if __name__ == "__main__":
 		directory = "results"
 		if not os.path.exists(directory):
