@@ -8,7 +8,7 @@
     <br />
     <a href="#about">About</a>
     ·
-    <a href="https://www.mediafire.com/file/4ilnmiq6xrgfr1i/app.zip/file">Download</a>
+    <a href="https://www.mediafire.com/file/4ilnmiq6xrgfr1i/happycert.zip/file">Download</a>
     ·
     <a href="#terjemahan-bahasa">Tutorial Indonesia</a>
     ·
@@ -23,7 +23,7 @@ this app include basic need such as changing text font,positioning, change color
 
 ## Download
 for windows user, download the .exe or .zip file here in google drive
-https://drive.google.com/drive/u/0/folders/1kD_oFd6BFH8faGDGzcpAqWpJJvflb5rO
+https://www.mediafire.com/file/4ilnmiq6xrgfr1i/happycert.zip/file
 
 
 ## Instalation and Usage
@@ -52,7 +52,7 @@ aplikasi ini memiliki fitur dasar seperti ganti warna text, memposisikan text se
 
 ## Unduhan
 Untuk pengguna Windows, unduh file .exe atau .zip di Google Drive berikut:
-https://www.mediafire.com/file/4ilnmiq6xrgfr1i/app.zip/file
+https://www.mediafire.com/file/4ilnmiq6xrgfr1i/happycert.zip/file
 
 ## Instalasi dan Penggunaan
 - Untuk pengguna Windows, cukup unduh file dari Google Drive yang telah disediakan di bagian sebelumnya (Download) dan jalankan file .exe (atau tekan "extract here" jika Anda mengunduh file .zip).
